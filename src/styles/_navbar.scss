@@ -1,0 +1,82 @@
+@use "./config" as *;
+
+.navbar {
+	@include flexCenter;
+	gap: 0.5rem;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	padding: 0.2rem 1rem;
+	padding-right: 100px;
+	border-bottom: 1px solid lighten($clr-dark-grey, 10%);
+	background-color: $clr-very-dark-grey;
+	z-index: 10000;
+
+	&__home-container {
+		left: 1rem;
+		@include flexCenter;
+		gap: 0.2rem;
+
+		&__icon {
+			width: 2rem;
+			aspect-ratio: 1;
+		}
+
+		&__name {
+			color: $clr-whitish;
+		}
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	&__search-container {
+		position: relative;
+		@include flexCenter;
+		gap: 0.5rem;
+		max-width: 400px;
+		width: 100%;
+		margin: 0 auto;
+		padding: 0.5rem;
+		border: 1px solid lighten($clr-dark-grey, 10%);
+		border-radius: 20px;
+		background-color: $clr-dark-grey;
+
+		&__icon {
+			font-size: 1.2rem;
+			color: lighten($clr-grey, 10%);
+		}
+
+		&__input {
+			width: 85%;
+			outline: none;
+			background: none;
+			border: none;
+			color: $clr-whitish;
+		}
+
+		&__cancel-btn {
+			position: absolute;
+			justify-content: center;
+			right: 0.5rem;
+			@include flexCenter;
+			width: 20px;
+			aspect-ratio: 1;
+			border: 1px solid $clr-whitish;
+			border-radius: 50%;
+			background: none;
+			z-index: 1000;
+
+			&:hover {
+				cursor: pointer;
+			}
+
+			&__icon {
+				font-size: 0.7rem;
+				color: $clr-whitish;
+			}
+		}
+	}
+}

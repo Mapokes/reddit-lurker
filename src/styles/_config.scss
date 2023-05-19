@@ -1,0 +1,84 @@
+// colors
+$clr-black: #030303;
+$clr-very-dark-grey: #1a1a1b;
+$clr-dark-grey: #272729;
+$clr-grey: #666868;
+$clr-whitish: #d7dadc;
+$clr-dark-blue: #17232d;
+$clr-blue: #4fbcff;
+
+// font family
+$font-arimo: "Arimo", sans-serif;
+
+// font weights
+$font-weights: (
+	"normal": 400,
+	"bold": 700,
+);
+
+// functions
+@function fontWeight($fontWeight) {
+	@return map-get($font-weights, $fontWeight);
+}
+
+// mixins
+@mixin flexCenter {
+	display: flex;
+	align-items: center;
+}
+
+@mixin headerOption {
+	display: flex;
+	align-items: center;
+	width: max-content;
+	gap: 0.4rem;
+	padding: 0.5rem;
+	border-radius: 20px;
+	font-weight: 700;
+	font-size: 1rem;
+	color: $clr-grey;
+
+	&.active {
+		pointer-events: none;
+		background-color: $clr-dark-grey;
+		color: $clr-whitish;
+	}
+
+	&:not(.header__view-options-btn):hover {
+		cursor: pointer;
+		background-color: $clr-dark-grey;
+	}
+}
+
+@mixin viewIconStyle {
+	display: grid;
+	grid-template-columns: 1fr;
+	width: 16px;
+	aspect-ratio: 1;
+	border: 2px solid $clr-grey;
+
+	&::before {
+		grid-row: 2/3;
+		content: "";
+		width: 100%;
+		height: 100%;
+		background: $clr-grey;
+	}
+}
+
+@mixin arrowButtonStyle {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	width: 34px;
+	aspect-ratio: 1;
+	border: none;
+	border-radius: 50%;
+	font-size: 1.5rem;
+	background-color: $clr-whitish;
+
+	&.visible {
+		display: flex;
+	}
+}

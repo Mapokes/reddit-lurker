@@ -1,0 +1,221 @@
+@use "./config" as *;
+
+.header {
+	width: 100%;
+	display: grid;
+	grid-template-areas: "alias-hot-link alias-hot-select-btn alias-new-link alias-top-link alias-top-select-btn alias-rising-link";
+	justify-content: start;
+	gap: 0.5rem;
+	padding: 0.7rem;
+	margin-bottom: 1rem;
+	border-radius: 5px;
+	border: 1px solid lighten($clr-dark-grey, 10%);
+	background-color: $clr-very-dark-grey;
+
+	&__hot-link {
+		grid-area: alias-hot-link;
+		@include headerOption;
+	}
+
+	&__hot-select-btn {
+		grid-area: alias-hot-select-btn;
+		position: relative;
+		@include headerOption;
+		border: none;
+		background-color: $clr-dark-grey;
+		color: $clr-whitish;
+
+		&__container {
+			position: absolute;
+			top: 2.5rem;
+			left: 0;
+			display: flex;
+			flex-direction: column;
+			max-height: 300px;
+			border-radius: 5px;
+			border: 1px solid lighten($clr-dark-grey, 10%);
+			background-color: $clr-very-dark-grey;
+			font-weight: fontWeight(normal);
+			white-space: nowrap;
+			overflow-y: scroll;
+			scrollbar-width: thin;
+			color: $clr-grey;
+			z-index: 1000;
+
+			&__option {
+				width: 100%;
+				padding: 0.5rem 0.4rem;
+				text-align: start;
+
+				&.active {
+					pointer-events: none;
+					color: $clr-whitish;
+				}
+
+				&:not(.active):hover {
+					background-color: $clr-dark-blue;
+					color: $clr-whitish;
+				}
+			}
+		}
+	}
+
+	&__new-link {
+		grid-area: alias-new-link;
+		@include headerOption;
+	}
+
+	&__top-link {
+		grid-area: alias-top-link;
+		@include headerOption;
+	}
+
+	&__top-select-btn {
+		grid-area: alias-top-select-btn;
+		position: relative;
+		@include headerOption;
+		border: none;
+		background-color: $clr-dark-grey;
+		color: $clr-whitish;
+
+		&__container {
+			position: absolute;
+			top: 2.5rem;
+			left: 0;
+			display: flex;
+			border-radius: 5px;
+			border: 1px solid lighten($clr-dark-grey, 10%);
+			background-color: $clr-very-dark-grey;
+			font-weight: fontWeight(normal);
+			white-space: nowrap;
+			color: $clr-grey;
+
+			&__option {
+				width: 100%;
+				padding: 0.4rem;
+				text-align: start;
+
+				&.active {
+					pointer-events: none;
+					color: $clr-whitish;
+				}
+
+				&:not(.active):hover {
+					background-color: $clr-dark-blue;
+					color: $clr-whitish;
+				}
+			}
+		}
+	}
+
+	&__rising-link {
+		grid-area: alias-rising-link;
+		@include headerOption;
+	}
+
+	// &__view-options-btn {
+	// 	position: relative;
+	// 	@include headerOption;
+	// 	margin-left: auto;
+	// 	border: none;
+	// 	background-color: $clr-very-dark-grey;
+
+	// 	& #card-icon {
+	// 		@include viewIconStyle;
+	// 		grid-template-rows: 1fr 2px 1fr;
+	// 		pointer-events: none;
+	// 	}
+
+	// 	& #classic-icon {
+	// 		@include viewIconStyle;
+	// 		grid-template-rows: 1fr 2px 1fr 2px 1fr;
+	// 		pointer-events: none;
+
+	// 		&::after {
+	// 			grid-row: 4/5;
+	// 			content: "";
+	// 			width: 100%;
+	// 			height: 100%;
+	// 			background: $clr-grey;
+	// 		}
+	// 	}
+
+	// 	&__container {
+	// 		position: absolute;
+	// 		top: 2.5rem;
+	// 		left: 0;
+	// 		display: flex;
+	// 		flex-direction: column;
+	// 		align-items: flex-start;
+	// 		border-radius: 5px;
+	// 		border: 1px solid lighten($clr-dark-grey, 10%);
+	// 		background-color: $clr-very-dark-grey;
+	// 		font-weight: fontWeight(normal);
+
+	// 		&__option {
+	// 			width: 100%;
+	// 			display: flex;
+	// 			gap: 0.5rem;
+	// 			padding: 0.4rem;
+
+	// 			&.active {
+	// 				color: $clr-whitish;
+
+	// 				& #card-icon {
+	// 					border: 2px solid $clr-whitish;
+
+	// 					&::before {
+	// 						background: $clr-whitish;
+	// 					}
+	// 				}
+
+	// 				& #classic-icon {
+	// 					border: 2px solid $clr-whitish;
+
+	// 					&::before {
+	// 						background: $clr-whitish;
+	// 					}
+
+	// 					&::after {
+	// 						background: $clr-whitish;
+	// 					}
+	// 				}
+	// 			}
+
+	// 			&:not(.active):hover {
+	// 				cursor: pointer;
+	// 				background-color: $clr-dark-blue;
+	// 				color: $clr-whitish;
+
+	// 				& #card-icon {
+	// 					border: 2px solid $clr-whitish;
+
+	// 					&::before {
+	// 						background: $clr-whitish;
+	// 					}
+	// 				}
+
+	// 				& #classic-icon {
+	// 					border: 2px solid $clr-whitish;
+
+	// 					&::before {
+	// 						background: $clr-whitish;
+	// 					}
+
+	// 					&::after {
+	// 						background: $clr-whitish;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+
+	// 	&:hover {
+	// 		cursor: pointer;
+	// 	}
+	// }
+
+	& i {
+		pointer-events: none;
+	}
+}

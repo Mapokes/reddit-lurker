@@ -1,0 +1,12 @@
+@use "./config" as *;
+
+.content {
+	width: 100%;
+	@include flexCenter;
+	flex-direction: column;
+	margin-top: 5rem;
+	// temporary
+	// height: 1000px;
+	// background-color: lightcoral;
+	overflow-anchor: none;
+}

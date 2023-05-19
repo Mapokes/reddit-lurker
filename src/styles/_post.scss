@@ -1,0 +1,165 @@
+@use "./config" as *;
+
+.post-container {
+	width: 100%;
+	display: grid;
+	grid-template-areas: "alias-upvotes-container alias-content";
+	grid-template-columns: 42px 1fr;
+	margin-bottom: 1rem;
+	border-radius: 5px;
+	border: 1px solid lighten($clr-dark-grey, 10%);
+	overflow: hidden;
+
+	&.snap-stop {
+		scroll-snap-stop: always;
+	}
+
+	&__upvotes-container {
+		grid-area: alias-upvotes-container;
+		@include flexCenter;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding: 0.2rem;
+		background-color: darken($clr-very-dark-grey, 4%);
+		font-size: 0.8rem;
+		font-weight: fontWeight(bold);
+		color: $clr-whitish;
+
+		&__arrow-up-icon {
+			margin-top: 0.5rem;
+		}
+	}
+
+	&__post-content {
+		grid-area: alias-content;
+		padding: 0.4rem;
+		background-color: $clr-very-dark-grey;
+
+		&__header {
+			@include flexCenter;
+			gap: 0.3rem;
+
+			& * {
+				text-decoration: none;
+				font-size: 0.8rem;
+				color: $clr-grey;
+			}
+
+			&__subreddit-icon {
+				width: 20px;
+				aspect-ratio: 1;
+				border-radius: 50%;
+			}
+
+			&__subreddit-link {
+				color: $clr-whitish;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+
+			&__post-author-link {
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+
+		&__article {
+			display: flex;
+			flex-direction: column;
+			margin-top: 0.5rem;
+
+			&__title-link {
+				width: fit-content;
+				text-decoration: none;
+				font-size: 1.5rem;
+				font-weight: fontWeight(bold);
+				color: $clr-whitish;
+
+				&:hover {
+					filter: brightness(0.9);
+				}
+			}
+
+			&__post-link-container {
+				@include flexCenter;
+				gap: 0.3rem;
+				margin-top: 0.5rem;
+				font-size: 0.9rem;
+
+				&__link {
+					text-decoration: none;
+					color: $clr-blue;
+
+					&__icon {
+						padding-left: 0.3rem;
+						color: $clr-blue;
+					}
+
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+			}
+
+			&__post-img-container {
+				@include flexCenter;
+				justify-content: center;
+				position: relative;
+
+				&__post-img-link {
+					display: none;
+
+					&__post-img {
+						max-width: 100%;
+						margin-top: 1rem;
+					}
+
+					&.visible {
+						display: block;
+					}
+				}
+
+				&__prev-button {
+					@include arrowButtonStyle;
+					left: 0.3rem;
+
+					&__icon {
+						pointer-events: none;
+					}
+				}
+
+				&__next-button {
+					@include arrowButtonStyle;
+					right: 0.3rem;
+
+					&__icon {
+						pointer-events: none;
+					}
+				}
+			}
+
+			& .twitter-tweet {
+				margin: 0 auto;
+			}
+
+			&__post-video {
+				max-width: 100%;
+				max-height: 512px;
+				margin-top: 1rem;
+				background-color: black;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+
+			&__youtube-video {
+				margin-top: 1rem;
+				height: 300px;
+			}
+		}
+	}
+}
