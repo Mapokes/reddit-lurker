@@ -38,7 +38,7 @@ Users are able to:
 
 ### Screenshots
 
-![screenshot1](https://i.postimg.cc/rcc7MPhm/1.png)
+![screenshot1](https://i.postimg.cc/KxXSkDDk/1.png)
 
 ### Links
 
