@@ -1,6 +1,6 @@
 # Reddit Lurker
 
-Just for lurking reddit. Still some tasks from my todo list to add later on.
+Just for lurking reddit. Still some tasks from my todo list to add later on...
 Bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Table of contents
