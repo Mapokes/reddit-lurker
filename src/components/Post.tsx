@@ -1,26 +1,26 @@
 import React from "react";
 import ReactTimeAgo from "react-time-ago";
 import SubIcon from "../icons/subredditIcon.png";
-import { TwitterTweetEmbed, TwitterVideoEmbed } from "react-twitter-embed";
 import { PostData } from "../types/types";
 import { Images } from "../types/types";
 import { nanoid } from "nanoid";
+import { TwitterTweetEmbed, TwitterVideoEmbed } from "react-twitter-embed"; // not used for now
 
 type PostProps = {
 	postData: PostData;
 };
 
-// ref is added only to last element as per .map fron SectioContent
+// ref is added only to (max elements - 4) as per .map from SectioContent and only when infinite scroll is turned on
 // in the rest cases of posts ref is null or undifined and is skipped in property ref inside returned jsx
-
 const Post = React.forwardRef<any, PostProps>(({ postData }, ref) => {
 	// console.log("Post rendered");
 
-	const userDate: any = new Date(postData.postTime * 1000);
-	const [images, setImages] = React.useState<Images[] | null>(postData.postImages ? postData.postImages : null);
-	const [currentImageIndex, setCurrentImageIndex] = React.useState<number>(1);
-	const [hovered, setHovered] = React.useState<boolean>(false);
+	const userDate: any = new Date(postData.postTime * 1000); // post time relative to user
+	const [images, setImages] = React.useState<Images[] | null>(postData.postImages ? postData.postImages : null); //array of images or a single image inside array or null
+	const [currentImageIndex, setCurrentImageIndex] = React.useState<number>(1); // current active image in case of album with images
+	const [hovered, setHovered] = React.useState<boolean>(false); // hover state when mouse is on image
 
+	// every time images changes and images exists -> sets currentImageIndex to current image from album
 	React.useEffect(() => {
 		if (images) {
 			images.map((image) => {
@@ -31,6 +31,7 @@ const Post = React.forwardRef<any, PostProps>(({ postData }, ref) => {
 		}
 	}, [images]);
 
+	/**converts upvotes number to use "k" for 1000s */
 	function upvotesConverter(upvotes: number): string | number {
 		let ups: string | number = upvotes;
 
@@ -43,10 +44,12 @@ const Post = React.forwardRef<any, PostProps>(({ postData }, ref) => {
 		}
 	}
 
+	/**handles click on prev and next button on images */
 	function handleClick(e: any): void {
 		const name: string = e.target.name;
 
 		if (name === "prev-btn") {
+			// if prev button is clicked state of images changes to previous image
 			setImages((prevImages) => {
 				return prevImages!.map((prevImage) => {
 					if (prevImage.index === currentImageIndex) {
@@ -65,6 +68,7 @@ const Post = React.forwardRef<any, PostProps>(({ postData }, ref) => {
 				});
 			});
 		} else if (name === "next-btn") {
+			// if next button is clicked state of images changes to next image
 			setImages((prevImages) => {
 				return prevImages!.map((prevImage) => {
 					if (prevImage.index === currentImageIndex) {
@@ -85,24 +89,27 @@ const Post = React.forwardRef<any, PostProps>(({ postData }, ref) => {
 		}
 	}
 
+	/**handles mouse over enter for images purposes */
 	function handleMouseEnter(): void {
 		setHovered(true);
 	}
 
+	/**handles mouse over leave for images purposes */
 	function handleMouseLeave(): void {
 		setHovered(false);
 	}
 
-	function getYoutubeID(youtubeLink: string): string {
-		const youtubeIndex: number = youtubeLink.indexOf("=") + 1;
-		const youtbeID: string = youtubeLink.substring(youtubeIndex, youtubeIndex + 11);
+	// =============================================================================================== disabled due cookies problems
+	// function getYoutubeID(youtubeLink: string): string {
+	// 	const youtubeIndex: number = youtubeLink.indexOf("=") + 1;
+	// 	const youtbeID: string = youtubeLink.substring(youtubeIndex, youtubeIndex + 11);
 
-		return youtbeID;
-	}
+	// 	return youtbeID;
+	// }
 
 	// link video youtube i streamable
 	// video twittera zrobic jak bedzie jakis przyklad
-	// zamiast layout w headerze moze mozliwosc zamiast infinite scrolla poprostu strony
+	// ===============================================================================================
 
 	return (
 		<div className={`post-container${ref ? " snap-stop" : ""}`} ref={ref}>
@@ -190,6 +197,9 @@ const Post = React.forwardRef<any, PostProps>(({ postData }, ref) => {
 							})}
 							{images.length > 1 && hovered && (
 								<>
+									<div className="post-container__post-content__article__post-img-container__img-counter-container">
+										{`${currentImageIndex}/${images.length}`}
+									</div>
 									<button
 										className={`post-container__post-content__article__post-img-container__prev-button${
 											currentImageIndex === 1 ? "" : " visible"
@@ -223,12 +233,14 @@ const Post = React.forwardRef<any, PostProps>(({ postData }, ref) => {
 						></video>
 					)}
 
-					{/* {postData.twitterLink && <TwitterTweetEmbed tweetId={postData.twitterLink} />}
+					{/* ============================ temporarly disabled ============================ */}
 
-					{postData.postDestination && postData.postDestination.includes("youtube") && (
+					{/* {postData.twitterLink && <TwitterTweetEmbed tweetId={postData.twitterLink} />} */}
+
+					{/* {postData.postDestination && postData.postDestination.includes("youtube") && (
 						<iframe
 							className="post-container__post-content__article__youtube-video"
-							src={`https://www.youtube.com/embed/${getYoutubeID(postData.postDestination)}`}
+							src={`https://www.youtube-nocookie.com/embed/${getYoutubeID(postData.postDestination)}`}
 							frameBorder="0"
 						></iframe>
 					)} */}

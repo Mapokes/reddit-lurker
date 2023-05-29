@@ -50,22 +50,6 @@ $font-weights: (
 	}
 }
 
-@mixin viewIconStyle {
-	display: grid;
-	grid-template-columns: 1fr;
-	width: 16px;
-	aspect-ratio: 1;
-	border: 2px solid $clr-grey;
-
-	&::before {
-		grid-row: 2/3;
-		content: "";
-		width: 100%;
-		height: 100%;
-		background: $clr-grey;
-	}
-}
-
 @mixin arrowButtonStyle {
 	display: none;
 	align-items: center;
@@ -80,5 +64,10 @@ $font-weights: (
 
 	&.visible {
 		display: flex;
+
+		&:hover {
+			cursor: pointer;
+			filter: brightness(0.9);
+		}
 	}
 }

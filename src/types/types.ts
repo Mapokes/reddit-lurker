@@ -1,30 +1,17 @@
 export type PostData = {
-	upvotes: number;
-	icon: string;
-	subName: string;
-	postAuthor: string;
-	postTime: number;
-	postTitle: string;
-	redditURL: string;
-	postText?: string;
-	postImages?: Images[];
-	postMedia?: string;
-	twitterLink?: string;
-	postDestination?: string;
+	upvotes: number; // upvotes - number of post upvotes
+	icon: string; // icon - subreddit icon of the post
+	subName: string; // subName - name of subreddit of the post
+	postAuthor: string; // postAuthor - name of author of the post
+	postTime: number; // postTime - time of creation of post
+	postTitle: string; // postTitle - title of post
+	redditURL: string; // redditURL - link to original post from reddit site
+	postText?: string; // postText? - text of post if there is any
+	postImages?: Images[]; // postImages? - array with image or images of post if there is/are any
+	postMedia?: string; // postMedia? - video of post if there is any
+	twitterLink?: string; // twitterLink? - twitter link of post if there is any
+	postDestination?: string; // postDestination? - link to site of post which it's referencing - if there is any
 };
-
-// upvotes - number of post upvotes
-// icon - subreddit icon of the post
-// subName - name of subreddit of the post
-// postAuthor - name of author of the post
-// postTime - time of creation of post
-// postTitle - title of post
-// redditURL - link to original post from reddit site
-// postText? - text of post if there is any
-// postImages? - array with image or images of post if there is/are any
-// postMedia? - video of post if there is any
-// twitterLink? - twitter link of post if there is any
-// postDestination? - link to site of post which it's referencing - if there is any
 
 export type Images = {
 	imageLink: string;
@@ -33,8 +20,9 @@ export type Images = {
 };
 
 export type FetchOptions = {
-	subredditName: string;
+	subredditName: string; // subredditName - name of subreddit. Can be "popular" for main reddit
 	listing: {
+		// listing - Hot/New/Top/Rising
 		option: {
 			hot: boolean;
 			new: boolean;
@@ -42,19 +30,24 @@ export type FetchOptions = {
 			rising: boolean;
 		};
 		value: string;
-		// name: string;
 	};
 	geoFilter?: {
+		// geoFilter? - geo locations of posts search. Available only with "Hot" listing
 		value: string;
 		name: string;
 	};
 	timeFrame?: {
+		// timeFrame? - Now/Today/This Week/This Month/This Year/All Time. Available only with "Top" listing
 		value: string;
 		name: string;
 	};
 };
 
-// subredditName - name of subreddit. Can be "popular" for main reddit
-// listing - Hot/New/Top/Rising
-// geoFilter? - geo locations of posts search. Available only with "Hot" listing
-// timeFrame? - Now/Today/This Week/This Month/This Year/All Time. Available only with "Top" listing
+export type RedditPages = {
+	Iscroll: boolean;
+	pagesAfter: {
+		pageNumber: number;
+		pageAfter: string;
+	}[];
+	activePage: number;
+};

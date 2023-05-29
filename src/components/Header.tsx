@@ -1,6 +1,7 @@
 import React from "react";
 import { FetchOptions } from "../types/types";
 import { PostData } from "../types/types";
+import { RedditPages } from "../types/types";
 import { nanoid } from "nanoid";
 
 type HeaderProps = {
@@ -9,6 +10,8 @@ type HeaderProps = {
 	setPostData: React.Dispatch<React.SetStateAction<PostData[]>>;
 	setPageAfter: React.Dispatch<React.SetStateAction<string>>;
 	path: string;
+	redditPages: RedditPages;
+	setRedditPages: React.Dispatch<React.SetStateAction<RedditPages>>;
 };
 
 type Options = {
@@ -21,7 +24,6 @@ type ListingOptions = Options & {
 type OptionsList = {
 	geoOptions: boolean;
 	topOptions: boolean;
-	viewOptions: boolean;
 };
 
 const Header: React.FC<HeaderProps> = ({
@@ -30,6 +32,8 @@ const Header: React.FC<HeaderProps> = ({
 	setPostData,
 	setPageAfter,
 	path,
+	redditPages,
+	setRedditPages,
 }: HeaderProps) => {
 	// console.log("Header rendered")
 
@@ -231,23 +235,22 @@ const Header: React.FC<HeaderProps> = ({
 	const [optionsList, setOptionsList] = React.useState<OptionsList>({
 		geoOptions: false,
 		topOptions: false,
-		viewOptions: false,
-	});
+	}); // state for tables with options
 
+	// on 1st render sets appriopriate state for fetchOptions depending on path
 	React.useEffect(() => {
-		// zrobic wybor na strony zamiast view?
-		console.log(path.substring(1, path.length - 1).split("/"));
-
 		const paramsURL: string[] =
 			path[path.length - 1] !== "/"
 				? path.substring(1, path.length).split("/")
-				: path.substring(1, path.length - 1).split("/");
+				: path.substring(1, path.length - 1).split("/"); // array with parameters taken from browser's URL
 
-		!paramsURL[1] && paramsURL.push(listingOptions[0].value);
-		paramsURL[1] === listingOptions[0].value && !paramsURL[2] && paramsURL.push(geoOptions[0].value);
-		paramsURL[1] === listingOptions[2].value && !paramsURL[2] && paramsURL.push(timeframeOptions[1].value);
+		!paramsURL[1] && paramsURL.push(listingOptions[0].value); // if 2nd element of paramsURL doesn't exist -> pushes default listingOption value
+		paramsURL[1] === "hot" && !paramsURL[2] && paramsURL.push(geoOptions[0].value); // if 2nd element of paramsURL is "hot" and 3rd element of paramsURL doesn't exist -> pushes default geoOptions value
+		paramsURL[1] === "top" && !paramsURL[2] && paramsURL.push(timeframeOptions[1].value); // if 2nd element of paramsURL is "top" and 3rd element of paramsURL doesn't exist -> pushes default timeframeOptions value
+		paramsURL[3] === "page" && !paramsURL[4] ? paramsURL.push("1") : (paramsURL[4] = "1"); // if 4th element of paramsURL is "page" and 5th element doesn't exist -> pushes "1". If 5th element exists -> changes it to "1" <-- this is due to lack of "after" parameter from reddit API
 
 		if (path === "/") {
+			// if path is "/" then sets default parameters for fetchOptions
 			setFetchOptions({
 				subredditName: "popular",
 				listing: {
@@ -265,6 +268,7 @@ const Header: React.FC<HeaderProps> = ({
 				},
 			});
 		} else if (paramsURL[0] === "popular") {
+			// if 1st element of paramsURL is "popular" then sets appropriate parameters for fetchOptions
 			setFetchOptions({
 				subredditName: paramsURL[0],
 				listing: {
@@ -291,6 +295,7 @@ const Header: React.FC<HeaderProps> = ({
 				}),
 			});
 		} else {
+			// in every other case sets appropriate parameters for fetchOptions
 			setFetchOptions({
 				subredditName: paramsURL[0],
 				listing: {
@@ -312,10 +317,22 @@ const Header: React.FC<HeaderProps> = ({
 			});
 		}
 
+		if (paramsURL[3] === "page") {
+			// if 4th element of paramsURL is "page" then sets state redditPages
+			setRedditPages((prevRedditPages) => {
+				return {
+					...prevRedditPages,
+					Iscroll: false,
+					activePage: Number(paramsURL[4]),
+				};
+			});
+		}
+
+		/**return appropriate geoOption name or timeframeOption name comparing 2nd and 3rd parameter of paramsURL to looped though geoOptions or timeframeOptions */
 		function getOptionName(listing: string, optionValue: string): any {
 			if (listing === "hot") {
 				for (let i = 0; i < geoOptions.length; i++) {
-					if (geoOptions[i].value === optionValue) {
+					if (geoOptions[i].value.toLowerCase() === optionValue) {
 						return geoOptions[i].name;
 					}
 				}
@@ -329,18 +346,18 @@ const Header: React.FC<HeaderProps> = ({
 		}
 	}, []);
 
-	console.log(fetchOptions);
-
+	// every time optionsList changes -> adds "mousedown" event listener to html body when optionsList.geoOptions or optionsList.topOptions is set to True. Removes it on click anywhere. Clears drop downs
 	React.useEffect(() => {
+		/**removes any active dropdown */
 		function clearDropdowns(e: any) {
 			const name: string = e.target.dataset.name;
 
-			if (name !== "geoOption" && name !== "timeframeOption" && name !== "cardView" && name !== "classicView") {
+			if (name !== "geoOption" && name !== "timeframeOption") {
 				closeDropdowns();
 			}
 		}
 
-		if (optionsList.geoOptions || optionsList.topOptions || optionsList.viewOptions) {
+		if (optionsList.geoOptions || optionsList.topOptions) {
 			document.addEventListener("mousedown", clearDropdowns);
 		}
 		return () => {
@@ -348,13 +365,13 @@ const Header: React.FC<HeaderProps> = ({
 		};
 	}, [optionsList]);
 
+	/**handles click of header buttons */
 	function handleClick(e: any): void {
 		const name: string = e.dataset.name;
 
-		// chyba da sie to zniwelowac do jednego else ifa
 		if (name === "hot" || name === "new" || name === "top" || name === "rising") {
-			setPostData([]);
-			setPageAfter("");
+			// reset states and sets new state of fetchOptions
+			resetStates();
 
 			setFetchOptions((prevFetchOptions): FetchOptions | null => {
 				if (prevFetchOptions) {
@@ -391,123 +408,12 @@ const Header: React.FC<HeaderProps> = ({
 					return null;
 				}
 			});
-		}
-
-		// if (name === "hot") {
-		// 	setPostData([]);
-		// 	setPageAfter("");
-
-		// 	setFetchOptions((prevFetchOptions): FetchOptions | null => {
-		// 		if (prevFetchOptions) {
-		// 			prevFetchOptions.timeFrame && delete prevFetchOptions.timeFrame;
-
-		// 			return {
-		// 				...prevFetchOptions,
-		// 				listing: {
-		// 					option: {
-		// 						hot: true,
-		// 						new: false,
-		// 						top: false,
-		// 						rising: false,
-		// 					},
-		// 					value: "hot",
-		// 				},
-		// 				...(prevFetchOptions.subredditName === "popular" && {
-		// 					geoFilter: {
-		// 						value: geoOptions[0].value,
-		// 						name: geoOptions[0].name,
-		// 					},
-		// 				}),
-		// 			};
-		// 		} else {
-		// 			return prevFetchOptions;
-		// 		}
-		// 	});
-		// } else if (name === "new") {
-		// 	setPostData([]);
-		// 	setPageAfter("");
-
-		// 	setFetchOptions((prevFetchOptions): FetchOptions | null => {
-		// 		if (prevFetchOptions) {
-		// 			prevFetchOptions.timeFrame && delete prevFetchOptions.timeFrame;
-		// 			prevFetchOptions.geoFilter && delete prevFetchOptions.geoFilter;
-
-		// 			return {
-		// 				...prevFetchOptions,
-		// 				listing: {
-		// 					option: {
-		// 						hot: false,
-		// 						new: true,
-		// 						top: false,
-		// 						rising: false,
-		// 					},
-		// 					value: "new",
-		// 				},
-		// 			};
-		// 		} else {
-		// 			return prevFetchOptions;
-		// 		}
-		// 	});
-		// } else if (name === "top") {
-		// 	setPostData([]);
-		// 	setPageAfter("");
-
-		// 	setFetchOptions((prevFetchOptions): FetchOptions | null => {
-		// 		if (prevFetchOptions) {
-		// 			prevFetchOptions.geoFilter && delete prevFetchOptions.geoFilter;
-
-		// 			return {
-		// 				...prevFetchOptions,
-		// 				listing: {
-		// 					option: {
-		// 						hot: false,
-		// 						new: false,
-		// 						top: true,
-		// 						rising: false,
-		// 					},
-		// 					value: "top",
-		// 				},
-		// 				timeFrame: {
-		// 					value: timeframeOptions[0].value,
-		// 					name: timeframeOptions[0].name,
-		// 				},
-		// 			};
-		// 		} else {
-		// 			return prevFetchOptions;
-		// 		}
-		// 	});
-		// } else if (name === "rising") {
-		// 	setPostData([]);
-		// 	setPageAfter("");
-
-		// 	setFetchOptions((prevFetchOptions): FetchOptions | null => {
-		// 		if (prevFetchOptions) {
-		// 			prevFetchOptions.timeFrame && delete prevFetchOptions.timeFrame;
-		// 			prevFetchOptions.geoFilter && delete prevFetchOptions.geoFilter;
-
-		// 			return {
-		// 				...prevFetchOptions,
-		// 				listing: {
-		// 					option: {
-		// 						hot: false,
-		// 						new: false,
-		// 						top: false,
-		// 						rising: true,
-		// 					},
-		// 					value: "rising",
-		// 				},
-		// 			};
-		// 		} else {
-		// 			return prevFetchOptions;
-		// 		}
-		// 	});
-		// }
-		else if (name === "geoOptions" || name === "topOptions" || name === "viewOptions") {
+		} else if (name === "geoOptions" || name === "topOptions") {
+			// sets new state of fetchOptions
 			setOptionsList((prevOptionsList) => {
 				prevOptionsList = {
 					geoOptions: false,
 					topOptions: false,
-					viewOptions: false,
 				};
 
 				return {
@@ -516,8 +422,8 @@ const Header: React.FC<HeaderProps> = ({
 				};
 			});
 		} else if (name === "geoOption") {
-			setPostData([]);
-			setPageAfter("");
+			// reset states and sets new state of fetchOptions. Closes dropdowns
+			resetStates();
 
 			fetchOptions &&
 				e.dataset.text !== fetchOptions.geoFilter &&
@@ -534,10 +440,11 @@ const Header: React.FC<HeaderProps> = ({
 						return prevFetchOptions;
 					}
 				});
+
 			closeDropdowns();
 		} else if (name === "timeframeOption") {
-			setPostData([]);
-			setPageAfter("");
+			// reset states and sets new state of fetchOptions. Closes dropdowns
+			resetStates();
 
 			fetchOptions &&
 				e.dataset.text !== fetchOptions.timeFrame &&
@@ -554,30 +461,50 @@ const Header: React.FC<HeaderProps> = ({
 						return prevFetchOptions;
 					}
 				});
+
 			closeDropdowns();
 		}
-		// else if (name === "cardView") {
-		// 	setView({
-		// 		card: true,
-		// 		classic: false,
-		// 	});
-		// 	closeDropdowns();
-		// }
-		// else if (name === "classicView") {
-		// 	setView({
-		// 		card: false,
-		// 		classic: true,
-		// 	});
-		// 	closeDropdowns();
-		// }
 	}
 
+	/**handles change on infinite scroll checkbox */
+	function handleChange(e: any): void {
+		const name: string = e.target.name;
+
+		if (name === "infinite-checkbox") {
+			// clears postData and sets redditPages
+			setPostData([]);
+
+			setRedditPages((prevRedditPages) => {
+				return {
+					...prevRedditPages,
+					Iscroll: !prevRedditPages.Iscroll,
+				};
+			});
+		}
+	}
+
+	/**set state of dropdowns to false of optionsList state */
 	function closeDropdowns(): void {
 		setOptionsList({
 			geoOptions: false,
 			topOptions: false,
-			viewOptions: false,
 		});
+	}
+
+	/**reset states of postData, pagesAfter if infinite scroll is enabled and state of redditPages if infinite scroll is disabled */
+	function resetStates(): void {
+		setPostData([]);
+
+		redditPages.Iscroll && setPageAfter("");
+
+		!redditPages.Iscroll &&
+			setRedditPages((prevRedditPages) => {
+				return {
+					...prevRedditPages,
+					pagesAfter: [{ pageNumber: 1, pageAfter: "" }],
+					activePage: 1,
+				};
+			});
 	}
 
 	return (
@@ -651,28 +578,16 @@ const Header: React.FC<HeaderProps> = ({
 				</button>
 			)}
 
-			{/* =================================================================================================================================================== */}
-
-			{/* <button className="header__view-options-btn" data-name="viewOptions" onClick={(e) => handleClick(e.target)}>
-				{view.card ? <div id="card-icon"></div> : <div id="classic-icon"></div>}
-				<i className="fa-solid fa-chevron-down header__view-options-btn__icon"></i>
-				{optionsList.viewOptions && (
-					<div className="header__view-options-btn__container">
-						<div
-							className={`header__view-options-btn__container__option${view.card ? " active" : ""}`}
-							data-name="cardView"
-						>
-							<div id="card-icon"></div>Card
-						</div>
-						<div
-							className={`header__view-options-btn__container__option${view.classic ? " active" : ""}`}
-							data-name="classicView"
-						>
-							<div id="classic-icon"></div>Classic
-						</div>
-					</div>
-				)}
-			</button> */}
+			<div className="header__checkbox-container">
+				<h3 className="header__checkbox-container__text">Iscroll</h3>
+				<input
+					className="header__checkbox-container__checkbox"
+					type="checkbox"
+					name="infinite-checkbox"
+					checked={redditPages.Iscroll}
+					onChange={handleChange}
+				/>
+			</div>
 		</header>
 	);
 };

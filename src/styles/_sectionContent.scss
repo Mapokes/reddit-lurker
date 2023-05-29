@@ -5,8 +5,32 @@
 	@include flexCenter;
 	flex-direction: column;
 	margin-top: 5rem;
-	// temporary
-	// height: 1000px;
-	// background-color: lightcoral;
 	overflow-anchor: none;
+
+	&__footer {
+		@include flexCenter;
+		justify-content: center;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+		margin-bottom: 2rem;
+
+		&__button {
+			padding: 0.3rem 0.4rem;
+			border: none;
+			border-radius: 10px;
+			background-color: $clr-grey;
+			color: $clr-dark-grey;
+			font-weight: fontWeight(bold);
+			font-size: 1rem;
+
+			&.active {
+				background-color: darken($clr-whitish, 10%);
+			}
+
+			&:hover {
+				cursor: pointer;
+				filter: brightness(0.8);
+			}
+		}
+	}
 }
