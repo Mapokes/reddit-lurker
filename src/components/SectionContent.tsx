@@ -12,9 +12,9 @@ import { nanoid } from "nanoid";
 
 // TODO
 // deleted "axis?
-// sprawdzic wsztkie funkcje bo sa chyba zle napisane: function test<T>(arg: T): T
-// poprawic bledy gdy jest npm start
-// dodac next i prev button do stron
+// test<T>(arg: T): T
+// npm start errors
+// add next, prev button to pages
 // back end to login with blacklisted subreddits
 // mobile version
 
