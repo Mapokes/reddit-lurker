@@ -38,7 +38,7 @@ Users are able to:
 
 ### Screenshots
 
-![screenshot1](https://i.postimg.cc/YpQJRfsh/Screenshot-2023-05-29-at-14-57-50-Reddit-Lurker-Lite.png)
+![screenshot1](https://i.postimg.cc/rcc7MPhm/1.png)
 
 ### Links
 
