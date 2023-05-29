@@ -58,7 +58,7 @@ Users are able to:
 - [javascript-time-ago](https://www.npmjs.com/package/javascript-time-ago) for calculating time
 - [react-spinners](https://www.npmjs.com/package/react-spinners) for loading animation
 - [react-error-boundary](https://www.npmjs.com/package/react-error-boundary) for error boundary
-- [react-twitter-embed"](https://www.npmjs.com/package/react-twitter-embed) for embeding twitter links
+- [react-twitter-embed](https://www.npmjs.com/package/react-twitter-embed) for embeding twitter links
 
 ## Author
 
