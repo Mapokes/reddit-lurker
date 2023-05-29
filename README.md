@@ -1,5 +1,6 @@
 # Reddit Lurker
 
+Just for lurking reddit. Still some tasks from my todo list to add later on.
 Bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Table of contents
@@ -13,8 +14,6 @@ Bootstrapped with [Create React App](https://github.com/facebook/create-react-ap
 - [Author](#author)
 
 ## Overview
-
-### The challenge
 
 Users are able to:
 
@@ -43,7 +42,7 @@ Users are able to:
 
 ### Links
 
-- Live Site URL: [gh pages]()
+- Live Site URL: [gh pages](https://mapokes.github.io/reddit-lurker/#/popular/hot/global)
 
 ## My process
 

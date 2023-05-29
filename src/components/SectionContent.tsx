@@ -10,6 +10,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { ErrorBoundary } from "react-error-boundary";
 import { nanoid } from "nanoid";
 
+// TODO
 // deleted "axis?
 // sprawdzic wsztkie funkcje bo sa chyba zle napisane: function test<T>(arg: T): T
 // poprawic bledy gdy jest npm start
