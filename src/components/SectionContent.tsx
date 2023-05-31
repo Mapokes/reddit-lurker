@@ -12,9 +12,7 @@ import { nanoid } from "nanoid";
 
 // TODO
 // deleted "axis?
-// test<T>(arg: T): T
 // npm start errors
-// add next, prev button to pages
 // back end to login with blacklisted subreddits
 // mobile version
 
@@ -37,7 +35,11 @@ const SectionContent: React.FC<SectionContentProps> = ({ path }) => {
 
 	// every time fetchOptions or redditPages and fetchOptions exists -> makes a fetch request
 	React.useEffect(() => {
-		if (fetchOptions) {
+		if (fetchOptions && redditPages.Iscroll) {
+			// fetch when infinite scroll is enabled
+			getPosts();
+		} else if (fetchOptions && !redditPages.Iscroll && postData.length === 0) {
+			// fetch when infinite scroll is disabled. Condition "postData.length === 0" doesn't prevents duplicate fetch
 			getPosts();
 		}
 	}, [fetchOptions, redditPages]);
@@ -263,6 +265,13 @@ const SectionContent: React.FC<SectionContentProps> = ({ path }) => {
 			{/* creates footer with pages numbers when loading and infinite scroll are turned off */}
 			{!redditPages.Iscroll && !isLoading && (
 				<footer className="content__footer">
+					<button
+						className="content__footer__button"
+						disabled={redditPages.activePage === 1 && true}
+						onClick={() => handleClick(redditPages.activePage - 1)}
+					>
+						<i className="fa-solid fa-chevron-left"></i>
+					</button>
 					{redditPages.pagesAfter.map((pageAfter) => {
 						return (
 							<button
@@ -274,6 +283,9 @@ const SectionContent: React.FC<SectionContentProps> = ({ path }) => {
 							</button>
 						);
 					})}
+					<button className="content__footer__button" onClick={() => handleClick(redditPages.activePage + 1)}>
+						<i className="fa-solid fa-chevron-right"></i>
+					</button>
 				</footer>
 			)}
 

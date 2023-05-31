@@ -121,7 +121,11 @@ const Post = React.forwardRef<any, PostProps>(({ postData }, ref) => {
 
 			<div className="post-container__post-content">
 				<header className="post-container__post-content__header">
-					<img className="post-container__post-content__header__subreddit-icon" src={postData.icon} alt={SubIcon} />
+					<img
+						className="post-container__post-content__header__subreddit-icon"
+						src={postData.icon ? postData.icon : SubIcon}
+						alt=""
+					/>
 					<a
 						className="post-container__post-content__header__subreddit-link"
 						href={`https://www.reddit.com/${postData.subName}`}

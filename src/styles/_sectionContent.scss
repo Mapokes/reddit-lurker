@@ -27,7 +27,7 @@
 				background-color: darken($clr-whitish, 10%);
 			}
 
-			&:hover {
+			&:not(:disabled):hover {
 				cursor: pointer;
 				filter: brightness(0.8);
 			}
