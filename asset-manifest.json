@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/reddit-lurker/static/css/main.7a781ed7.css",
-    "main.js": "/reddit-lurker/static/js/main.526010b9.js",
+    "main.css": "/reddit-lurker/static/css/main.6d852f3e.css",
+    "main.js": "/reddit-lurker/static/js/main.b5aa4a1f.js",
     "static/media/subredditIcon.png": "/reddit-lurker/static/media/subredditIcon.76c55c6b77feeea1eb00.png",
     "static/media/redditIcon.png": "/reddit-lurker/static/media/redditIcon.1202d9af567c1c424a58.png",
     "index.html": "/reddit-lurker/index.html",
-    "main.7a781ed7.css.map": "/reddit-lurker/static/css/main.7a781ed7.css.map",
-    "main.526010b9.js.map": "/reddit-lurker/static/js/main.526010b9.js.map"
+    "main.6d852f3e.css.map": "/reddit-lurker/static/css/main.6d852f3e.css.map",
+    "main.b5aa4a1f.js.map": "/reddit-lurker/static/js/main.b5aa4a1f.js.map"
   },
   "entrypoints": [
-    "static/css/main.7a781ed7.css",
-    "static/js/main.526010b9.js"
+    "static/css/main.6d852f3e.css",
+    "static/js/main.b5aa4a1f.js"
   ]
 }
